@@ -1,0 +1,97 @@
+<form [formGroup]="form">
+    <div class="flex flex-row formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label [required]="form.controls.nombre">NOMBRE</label>
+            <input pInputText type="text" [formControl]="form.controls.nombre" />
+            <od-validation [control]="form.controls.nombre"></od-validation>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <label [required]="form.controls.nombreReal">NOMBRE REAL</label>
+            <input pInputText type="text" [formControl]="form.controls.nombreReal" />
+            <od-validation [control]="form.controls.nombreReal"></od-validation>
+        </div>
+    </div>
+
+    <div class="flex flex-row formgrid grid">
+        <div class="field col-12">
+            <label [required]="form.controls.biografia">BIOGRAF&Iacute;A</label>
+            <textarea pInputTextarea rows="2" [autoResize]="true" [formControl]="form.controls.biografia"></textarea>
+            <od-validation [control]="form.controls.biografia"></od-validation>
+        </div>
+    </div>
+
+    <div class="flex flex-row formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label [required]="form.controls.afiliacion">AFILIACI&Oacute;N</label>
+            <input pInputText type="text" [formControl]="form.controls.afiliacion" />
+            <od-validation [control]="form.controls.afiliacion"></od-validation>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <label [required]="form.controls.origen">ORIGEN</label>
+            <input pInputText type="text" [formControl]="form.controls.origen" />
+            <od-validation [control]="form.controls.origen"></od-validation>
+        </div>
+    </div>
+
+    <div class="flex flex-row formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label [required]="form.controls.edad">EDAD</label>
+            <p-inputNumber mode="decimal" [min]="0" [max]="100" [locale]="'es-PE'" [formControl]="form.controls.edad" />
+            <od-validation [control]="form.controls.edad"></od-validation>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <label [required]="form.controls.nivelPoder">NIVEL PODER</label>
+            <p-inputNumber mode="decimal" [min]="0" [max]="100" [locale]="'es-PE'" [formControl]="form.controls.nivelPoder" />
+            <od-validation [control]="form.controls.nivelPoder"></od-validation>
+        </div>
+    </div>
+
+    <div class="flex flex-row formgrid grid">
+        <div class="field col-12">
+            <label [required]="form.controls.superPoderes">SUPERPODERES</label>
+            <p-chips [formControl]="form.controls.superPoderes" [max]="5" placeholder="Ingrese el valor y presione Enter"></p-chips>
+            <od-validation [control]="form.controls.superPoderes"></od-validation>
+        </div>
+    </div>
+
+    <div class="flex flex-row formgrid grid">
+        <div class="field col-12">
+            <label [required]="form.controls.habilidades">HABILIDADES</label>
+            <p-chips [formControl]="form.controls.habilidades" [max]="5" placeholder="Ingrese el valor y presione Enter"></p-chips>
+            <od-validation [control]="form.controls.habilidades"></od-validation>
+        </div>
+    </div>
+</form>
+
+<div class="flex flex-row align-items-start justify-content-end">
+    <div class="flex align-items-start justify-content-end">
+        <button
+            pButton
+            pRipple
+            type="button"
+            class="p-button-secondary mr-2"
+            [label]="'CANCELAR'"
+            [icon]="'pi pi-times text-pink-500'"
+            [pTooltip]="'CANCELAR'"
+            [tooltipPosition]="'left'"
+            [disabled]="loading()"
+            (click)="onClickCancelarEvent()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            type="button"
+            [loading]="loading()"
+            [label]="'GUARDAR'"
+            [icon]="'pi pi-save text-green-500'"
+            [loadingIcon]="'pi pi-spin pi-spinner text-green-500'"
+            [pTooltip]="'GUARDAR'"
+            [tooltipPosition]="'left'"
+            [disabled]="loading()"
+            (click)="onClickGuardarEvent()"
+        ></button>
+    </div>
+</div>

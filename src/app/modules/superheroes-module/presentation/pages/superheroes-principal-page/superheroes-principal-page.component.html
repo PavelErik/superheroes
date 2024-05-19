@@ -1,0 +1,28 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <div class="flex flex-row align-items-start justify-content-between mt-2">
+                <h4 class="flex align-items-start justify-content-start w-9">SUPERHEROES</h4>
+                <div class="flex align-items-end justify-content-end w-3">
+                    <button
+                        *ngIf="menus().length > 0"
+                        pButton
+                        pRipple
+                        class="p-button-outlined w-3rem"
+                        icon="pi pi-angle-down"
+                        tooltipPosition="left"
+                        [pTooltip]="'VER LISTA DE OPERACIONES'"
+                        [disabled]="loadingTable()"
+                        (click)="menuCentroCostoMain.toggle($event)"
+                    ></button>
+                </div>
+            </div>
+
+            <div class="p-fluid mt-2">
+                <app-superheroes-listar> </app-superheroes-listar>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-menu #menuCentroCostoMain [popup]="true" [model]="menus()"></p-menu>

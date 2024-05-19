@@ -1,0 +1,22 @@
+<p-chip
+    *ngIf="elements.length > 0 && elements.length !== 1"
+    styleClass="text-lg font-bold"
+    removeIcon="pi pi-times-circle text-pink-500"
+    [label]="elements.length + ' ' + 'Elementos Seleccionados'"
+    [removable]="true"
+    (onRemove)="onReset()"
+></p-chip>
+<p-chip
+    *ngIf="elements.length === 1"
+    styleClass="text-lg font-bold"
+    removeIcon="pi pi-times-circle text-pink-500"
+    [label]="elements.length + ' ' + 'Elemento Seleccionado'"
+    [removable]="true"
+    (onRemove)="onReset()"
+></p-chip>
+<p-chip
+    *ngIf="elements.length == 0"
+    styleClass="text-lg font-bold"
+    removeIcon="pi pi-times-circle text-pink-500"
+    [label]="elements.length + ' ' + 'Elementos Seleccionados'"
+></p-chip>

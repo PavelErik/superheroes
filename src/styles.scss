@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Variables */
+$gutter: 1rem;
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+
+/* Style Layout */
+@import "assets/layout/styles/layout/layout.scss";
+
+/* Custom Styles */
+.p-frozen-column {
+    font-weight: bold;
+    background-color: var(--surface-50) !important;
+    border-radius: 0px !important;
+}
+
+.p-datatable .p-datatable-thead th:hover {
+    background-color: var(--surface-50) !important;
+}
+
+.required-field::after {
+    content: "*";
+    color: #c00;
+    margin-left: 3px;
+    font-weight: bold;
+}

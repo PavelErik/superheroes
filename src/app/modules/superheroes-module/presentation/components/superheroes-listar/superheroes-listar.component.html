@@ -1,0 +1,182 @@
+<p-table
+    #superHeroesTable
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    selectionMode="multiple"
+    stateStorage="session"
+    [dataKey]="CONFIG.DATA_KEY"
+    [scrollHeight]="CONFIG.SCROLL_SIZE_REM"
+    [rowsPerPageOptions]="CONFIG.PAGE_SIZE_LIST"
+    [currentPageReportTemplate]="CONFIG.REPORT_TEMPLATE"
+    [value]="superheroes()"
+    [rows]="pagination().pageSize"
+    [totalRecords]="total()"
+    [loading]="loading()"
+    [scrollable]="true"
+    [rowHover]="true"
+    [paginator]="true"
+    [showCurrentPageReport]="true"
+    [resetPageOnSort]="false"
+    [lazy]="true"
+    [rowTrackBy]="trackByFn"
+    [(selection)]="selectedSuperheroes"
+    (onLazyLoad)="onLazyLoadEvent($event)"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex flex-column sm:flex-row align-items-start justify-content-between">
+            <div class="flex align-items-start justify-content-start">
+                <od-select [elements]="selectedSuperheroes" (reset)="selectedSuperheroes = []"></od-select>
+            </div>
+            <div class="flex align-items-start justify-content-end">
+                <div class="flex align-items-start justify-content-end sm:mt-0 mt-2">
+                    <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-filter-slash"
+                        class="p-button-outlined p-button-text"
+                        tooltipPosition="left"
+                        [pTooltip]="'Limpiar Filtros Tabla'"
+                        [disabled]="loading()"
+                        (click)="search.value = ''; onResetFiltersEvent(superHeroesTable)"
+                    ></button>
+                </div>
+                <div class="flex align-items-start justify-content-end sm:mt-0 mt-2 ml-2">
+                    <button
+                        pButton
+                        pRipple
+                        type="button"
+                        class="p-button-outlined p-button-text"
+                        tooltipPosition="left"
+                        [icon]="frozenAction() ? 'pi pi-unlock' : 'pi pi-lock-open'"
+                        [pTooltip]="frozenAction() ? 'Descongelar Columnas' : 'Congelar Columnas'"
+                        [disabled]="loading()"
+                        (click)="frozenAction.set(!frozenAction())"
+                    ></button>
+                </div>
+                <div class="flex align-items-start justify-content-end sm:mt-0 mt-2 ml-2">
+                    <span class="p-input-icon-left">
+                        <i [class]="loading() ? 'pi pi-spin pi pi-spinner' : 'pi pi-search'"></i>
+                        <input
+                            #search
+                            pInputText
+                            type="text"
+                            class="sm:w-20rem w-10rem"
+                            tooltipPosition="bottom"
+                            appendTo="body"
+                            [placeholder]="'Ingrese un valor y presione Enter'"
+                            [readOnly]="loading()"
+                            (keyup.enter)="onSearchEvent($event, superHeroesTable)"
+                        />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th pFrozenColumn class="text-center" style="min-width: 3rem" [frozen]="frozenAction()">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pFrozenColumn class="text-center" style="min-width: 3rem" [frozen]="frozenAction()"></th>
+            <th [pSortableColumn]="FIELDS_TABLE.nombre" class="text-center" style="min-width: 15rem">
+                NOMBRE<p-sortIcon [field]="FIELDS_TABLE.nombre"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="FIELDS_TABLE.nombreReal" class="text-center" style="min-width: 15rem">
+                NOMBRE REAL<p-sortIcon [field]="FIELDS_TABLE.nombreReal"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="FIELDS_TABLE.afiliacion" class="text-center" style="min-width: 10rem">
+                AFILIACION<p-sortIcon [field]="FIELDS_TABLE.afiliacion"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="FIELDS_TABLE.origen" class="text-center" style="min-width: 10rem">
+                ORIGEN<p-sortIcon [field]="FIELDS_TABLE.origen"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="FIELDS_TABLE.edad" class="text-center" style="min-width: 10rem">
+                EDAD<p-sortIcon [field]="FIELDS_TABLE.edad"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="FIELDS_TABLE.nivelPoder" class="text-center" style="min-width: 10rem">
+                NIVEL PODER<p-sortIcon [field]="FIELDS_TABLE.nivelPoder"></p-sortIcon>
+            </th>
+            <th
+                pFrozenColumn
+                class="text-center text-pink-700"
+                alignFrozen="right"
+                style="min-width: 7rem; max-width: 7rem"
+                [frozen]="frozenAction()"
+            >
+                ACCIONES
+            </th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-superHeroe let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="superHeroe">
+            <td pFrozenColumn class="text-center font-bold" [frozen]="frozenAction()">
+                <p-tableCheckbox [value]="superHeroe" [disabled]="true"></p-tableCheckbox>
+            </td>
+            <td pFrozenColumn class="text-center font-bold" [frozen]="frozenAction()">
+                {{ rowIndex + 1 }}
+            </td>
+            <td class="text-left">
+                <img
+                    [alt]="'Imagen de ' + superHeroe.nombre"
+                    src="assets/images/avatar/{{ superHeroe.imagen }}"
+                    width="32"
+                    style="vertical-align: middle"
+                />
+                <span class="image-text ml-2">{{ superHeroe.nombre | capitalize }}</span>
+            </td>
+            <td class="text-left">{{ superHeroe.nombreReal }}</td>
+            <td class="text-center">{{ superHeroe.afiliacion }}</td>
+            <td class="text-center">{{ superHeroe.origen }}</td>
+            <td class="text-right">{{ superHeroe.edad }}</td>
+            <td class="text-center">
+                <p-progressBar
+                    [value]="superHeroe.nivelPoder"
+                    [showValue]="false"
+                    [style]="{ height: '0.5rem' }"
+                    [pTooltip]="superHeroe.nivelPoder + '%'"
+                ></p-progressBar>
+            </td>
+            <td pFrozenColumn class="text-center" alignFrozen="right" [frozen]="frozenAction()">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-pencil"
+                    class="p-button-outlined p-button-success mr-2"
+                    pTooltip="Editar Superheroe"
+                    tooltipPosition="left"
+                    (click)="selectedSuperheroes = [superHeroe]; onEditarSuperheroeEvent(superHeroe)"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-trash"
+                    class="p-button-outlined p-button-danger"
+                    pTooltip="Eliminar Superheroe"
+                    tooltipPosition="left"
+                    (click)="selectedSuperheroes = [superHeroe]; onEliminarSuperheroeEvent(superHeroe)"
+                ></button>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="loadingbody">
+        <tr *ngIf="loading()">
+            <td pFrozenColumn [frozen]="frozenAction()"></td>
+            <td pFrozenColumn [frozen]="frozenAction()"></td>
+            <td colspan="6" class="text-center font-bold font-italic text-pink-500 text-xl p-2">CARGANDO DATOS, POR FAVOR ESPERE...</td>
+            <td pFrozenColumn alignFrozen="right" [frozen]="frozenAction()"></td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+        <tr *ngIf="superheroes().length == 0 && !loading()">
+            <td pFrozenColumn [frozen]="frozenAction()"></td>
+            <td pFrozenColumn [frozen]="frozenAction()"></td>
+            <td colspan="6" class="text-center font-bold font-italic text-pink-500 text-xl p-2">NO SE ENCONTRARON RESULTADOS</td>
+            <td pFrozenColumn alignFrozen="right" [frozen]="frozenAction()"></td>
+        </tr>
+    </ng-template>
+</p-table>

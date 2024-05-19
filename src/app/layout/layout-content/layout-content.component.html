@@ -1,0 +1,30 @@
+<div class="layout-container layout-static-inactive">
+    <div class="layout-topbar shadow-3 bg-indigo-600 p-3 flex justify-content-between flex-row align-items-center">
+        <div class="ml-3 flex" routerLink="/">
+            <img class="h-2rem" src="assets/images/pages/logo2x.png" alt="logo" />
+        </div>
+    </div>
+
+    <div class="layout-content-wrapper">
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+<p-toast [key]="TOAST_CONFIG.KEY" [preventOpenDuplicates]="true"> </p-toast>
+
+<p-blockUI [blocked]="loading()">
+    <i class="pi pi-spin pi-spinner" style="font-size: 5rem"></i>
+</p-blockUI>
+
+<p-confirmDialog
+    [header]="CONFIRM_DIALOG_CONFIG.HEADER"
+    [key]="CONFIRM_DIALOG_CONFIG.KEY"
+    [icon]="CONFIRM_DIALOG_CONFIG.ICON"
+    [style]="{ width: '350px' }"
+    [acceptLabel]="CONFIRM_DIALOG_CONFIG.ACCEPT_LABEL"
+    [rejectLabel]="CONFIRM_DIALOG_CONFIG.REJECT_LABEL"
+    acceptButtonStyleClass="p-button-text"
+    rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>
